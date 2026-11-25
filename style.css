@@ -1,0 +1,204 @@
+/* ===== Gerador de Currículo — interface ===== */
+:root {
+  --bg: #f3f4f6;
+  --card: #fff;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --primary: #2563eb;
+  --danger: #b91c1c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+.topbar {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: #fff; border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 10;
+}
+.brand h1 { margin: 0; font-size: 1.25rem; }
+.brand p { margin: 2px 0 0; font-size: .8rem; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px;
+  padding: 8px 12px; font: inherit; font-size: .85rem; cursor: pointer; display: inline-block;
+}
+.btn:hover { background: #f9fafb; }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
+.btn.primary:hover { background: #1d4ed8; }
+.btn.small { padding: 6px 10px; font-size: .8rem; }
+.btn.danger { color: var(--danger); }
+
+.layout { display: grid; grid-template-columns: minmax(340px, 460px) 1fr; gap: 20px; padding: 20px; align-items: start; }
+.panel { display: flex; flex-direction: column; gap: 14px; }
+.preview { overflow: hidden; min-width: 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.card h2 { margin: 0 0 10px; font-size: 1rem; }
+label { display: block; font-size: .8rem; color: var(--muted); margin-bottom: 8px; }
+input, textarea, select {
+  width: 100%; margin-top: 4px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px;
+  font: inherit; font-size: .9rem; color: var(--ink); background: #fff;
+}
+input[type="color"] { padding: 2px; height: 36px; cursor: pointer; }
+input[type="range"] { padding: 0; }
+textarea { resize: vertical; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; }
+.grid2 .span2 { grid-column: 1 / -1; }
+.row3 { display: grid; grid-template-columns: 90px 1fr; gap: 12px; align-items: end; margin-top: 10px; }
+.hint { color: var(--muted); font-size: .8rem; margin: 8px 0 0; }
+.hint.foot { padding: 0 4px 20px; }
+.item-card { border: 1px dashed var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; background: #fafafa; }
+.item-tools { display: flex; gap: 6px; justify-content: flex-end; }
+.pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pill {
+  border: 2px solid var(--line); background: #fff; border-radius: 10px; padding: 8px 6px; font: inherit; font-size: .8rem;
+  cursor: pointer; text-align: center;
+}
+.pill[aria-checked="true"] { border-color: var(--primary); background: #eff6ff; font-weight: 600; }
+.notice { font-size: .8rem; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; border-radius: 8px; padding: 8px 10px; margin-top: 8px; }
+.notice.warn { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+
+.scale-box { position: relative; }
+.scale-box .cv { transform-origin: top left; box-shadow: 0 6px 24px rgba(0,0,0,.18); }
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .preview { order: -1; }
+}
+
+/* ===== Currículo (A4) — base compartilhada ===== */
+.cv {
+  --accent: #1f4e79;
+  --fs: 10.5;
+  --pad: 15mm;
+  width: 210mm; min-height: 296mm;
+  background: #fff; color: #222;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  font-size: calc(var(--fs) * 1pt); line-height: 1.4;
+  overflow-wrap: anywhere;
+  print-color-adjust: exact; -webkit-print-color-adjust: exact;
+}
+.cv h1, .cv h2, .cv h3, .cv h4, .cv p, .cv ul { margin: 0; }
+.cv ul { padding-left: 1.15em; }
+.cv li { margin: .15em 0; }
+.cv a { color: inherit; text-decoration: none; }
+.cv section { break-inside: auto; }
+.cv h3 { break-after: avoid; }
+.cv .habilidades, .cv .idiomas, .cv .resumo { break-inside: avoid; }
+.cv .item { margin-bottom: .85em; break-inside: avoid; }
+.cv .item .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.cv .item h4 { font-size: 1.05em; }
+.cv .per { font-size: .9em; color: #555; white-space: nowrap; }
+.cv .org { color: #444; }
+.cv .item ul { margin-top: .25em; }
+.cv .lista { list-style: none; padding: 0; }
+.cv .chips { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: .15em .7em; }
+.cv .chips li { margin: 0; }
+
+/* ordem das seções nos modelos de coluna única */
+.cv [data-s="header"] { order: 0; }
+.cv [data-s="contato"] { order: 1; }
+.cv [data-s="resumo"] { order: 2; }
+.cv [data-s="experiencia"] { order: 3; }
+.cv [data-s="formacao"] { order: 4; }
+.cv [data-s="cursos"] { order: 5; }
+.cv [data-s="habilidades"] { order: 6; }
+.cv [data-s="idiomas"] { order: 7; }
+
+.cv.t-classico, .cv.t-minimalista, .cv.t-executivo, .cv.t-compacto {
+  display: flex; flex-direction: column;
+}
+.t-classico .cv-side, .t-classico .cv-main,
+.t-minimalista .cv-side, .t-minimalista .cv-main,
+.t-executivo .cv-side, .t-executivo .cv-main,
+.t-compacto .cv-side, .t-compacto .cv-main { display: contents; }
+.t-classico .contato h3, .t-minimalista .contato h3, .t-executivo .contato h3, .t-compacto .contato h3 { display: none; }
+
+/* ---------- 1. Clássico ---------- */
+.t-classico { padding: var(--pad); font-family: Georgia, "Times New Roman", serif; }
+.t-classico header { text-align: center; margin-bottom: .3em; }
+.t-classico h1 { font-size: 2.3em; letter-spacing: .04em; color: var(--accent); }
+.t-classico .cargo { font-style: italic; font-size: 1.15em; margin-top: .1em; }
+.t-classico .contato ul { display: flex; flex-wrap: wrap; justify-content: center; gap: .1em 1.1em; font-size: .95em; margin-bottom: .6em; }
+.t-classico h3 { text-transform: uppercase; letter-spacing: .1em; font-size: .95em; color: var(--accent); border-bottom: 1.5px solid var(--accent); padding-bottom: .15em; margin: 1em 0 .5em; }
+.t-classico .chips li:not(:last-child)::after { content: "·"; margin-left: .7em; }
+
+/* ---------- 2. Moderno (barra lateral esquerda) ---------- */
+.t-moderno {
+  --side: 68mm;
+  display: grid; grid-template-columns: var(--side) 1fr; padding: 0;
+  background: linear-gradient(to right, var(--accent) var(--side), #fff var(--side));
+}
+.t-moderno .cv-side { color: #fff; padding: 14mm 8mm; }
+.t-moderno .cv-main { padding: 14mm 14mm 14mm 12mm; }
+.t-moderno .cv-side h3 { font-size: .85em; text-transform: uppercase; letter-spacing: .12em; border-bottom: 1px solid rgba(255,255,255,.45); padding-bottom: .25em; margin: 1.2em 0 .5em; }
+.t-moderno .cv-side section:first-child h3 { margin-top: 0; }
+.t-moderno .lista li, .t-moderno .chips li { margin: .25em 0; }
+.t-moderno .chips { flex-direction: column; gap: 0; }
+.t-moderno h1 { font-size: 2.4em; line-height: 1.1; color: var(--accent); }
+.t-moderno .cargo { font-size: 1.15em; color: #555; margin: .2em 0 .6em; }
+.t-moderno .cv-main h3 { font-size: 1em; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin: 1.1em 0 .5em; display: flex; align-items: center; gap: .6em; }
+.t-moderno .cv-main h3::after { content: ""; flex: 1; height: 1px; background: #d1d5db; }
+
+/* ---------- 3. Minimalista ---------- */
+.t-minimalista { padding: 14mm var(--pad); font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #333; }
+.t-minimalista h1 { font-size: 2.6em; font-weight: 300; letter-spacing: .01em; }
+.t-minimalista .cargo { color: var(--accent); font-size: 1.1em; margin-top: .15em; letter-spacing: .05em; }
+.t-minimalista .contato ul { display: flex; flex-wrap: wrap; gap: .1em 1.2em; font-size: .9em; color: #666; margin: .8em 0 .4em; }
+.t-minimalista h3 { font-size: .78em; text-transform: uppercase; letter-spacing: .22em; color: #888; font-weight: 600; margin: 1.25em 0 .6em; display: flex; align-items: center; gap: .7em; }
+.t-minimalista h3::before { content: ""; width: 1.6em; height: 2px; background: var(--accent); }
+.t-minimalista .item { margin-bottom: 1.1em; }
+
+/* ---------- 4. Executivo (faixa no topo) ---------- */
+.t-executivo { padding: 0 0 12mm; font-family: Georgia, "Times New Roman", serif; }
+.t-executivo header { background: var(--accent); color: #fff; padding: 10mm var(--pad) 7mm; }
+.t-executivo h1 { font-size: 2.4em; letter-spacing: .03em; }
+.t-executivo .cargo { font-size: 1.15em; opacity: .92; margin-top: .15em; letter-spacing: .08em; text-transform: uppercase; }
+.t-executivo .contato { background: #f3f4f6; padding: 3mm var(--pad); border-bottom: 1px solid #e5e7eb; }
+.t-executivo .contato ul { display: flex; flex-wrap: wrap; gap: .1em 1.3em; font-size: .92em; font-family: system-ui, "Segoe UI", Arial, sans-serif; }
+.t-executivo section:not(.contato) { padding: 0 var(--pad); margin-top: .8em; }
+.t-executivo h3 { font-size: 1.05em; color: var(--accent); border-left: 4px solid var(--accent); padding-left: .55em; margin-bottom: .55em; text-transform: uppercase; letter-spacing: .06em; }
+
+/* ---------- 5. Criativo (barra lateral direita) ---------- */
+.t-criativo {
+  --side: 64mm;
+  --tint: color-mix(in srgb, var(--accent) 11%, #fff);
+  display: grid; grid-template-columns: 1fr var(--side); padding: 0;
+  background: linear-gradient(to left, var(--tint) var(--side), #fff var(--side));
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, Arial, sans-serif;
+}
+.t-criativo .cv-main { padding: 14mm 12mm 14mm 14mm; }
+.t-criativo .cv-side { order: 2; padding: 14mm 8mm; }
+.t-criativo header { border-left: 6px solid var(--accent); padding-left: 5mm; margin-bottom: .8em; }
+.t-criativo h1 { font-size: 2.6em; font-weight: 800; line-height: 1.05; color: var(--accent); }
+.t-criativo .cargo { text-transform: uppercase; letter-spacing: .18em; font-size: .95em; color: #444; margin-top: .3em; }
+.t-criativo h3 { font-size: 1em; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin: 1.1em 0 .5em; display: flex; align-items: center; gap: .5em; }
+.t-criativo h3::before { content: ""; width: .7em; height: .7em; border-radius: 50%; background: var(--accent); flex: none; }
+.t-criativo .cv-side section:first-child h3 { margin-top: 0; }
+.t-criativo .chips { flex-direction: column; gap: 0; }
+.t-criativo .chips li, .t-criativo .lista li { margin: .25em 0; }
+
+/* ---------- 6. Compacto (título à esquerda) ---------- */
+.t-compacto { padding: 12mm var(--pad); font-size: calc(var(--fs) * .95 * 1pt); }
+.t-compacto header { border-bottom: 2.5px solid var(--accent); padding-bottom: .4em; }
+.t-compacto h1 { font-size: 2.1em; color: var(--accent); line-height: 1.1; }
+.t-compacto .cargo { font-size: 1.1em; color: #444; margin-top: .1em; }
+.t-compacto .contato ul { display: flex; flex-wrap: wrap; gap: .1em 1em; font-size: .92em; color: #555; margin: .45em 0 .2em; }
+.t-compacto section:not(.contato) { display: grid; grid-template-columns: 30mm 1fr; column-gap: 6mm; border-top: 1px solid #e5e7eb; padding-top: .6em; margin-top: .6em; }
+.t-compacto h3 { font-size: .85em; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); padding-top: .15em; }
+.t-compacto .item { margin-bottom: .65em; }
+
+/* ===== Impressão / PDF ===== */
+@media print {
+  @page { size: A4; margin: 0; }
+  html, body { background: #fff; }
+  .topbar, .panel { display: none !important; }
+  .layout { display: block; padding: 0; }
+  .preview { overflow: visible; }
+  .scale-box { width: auto !important; height: auto !important; }
+  .scale-box .cv { transform: none !important; box-shadow: none; min-height: 296mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+}
