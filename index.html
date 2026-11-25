@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gerador de Currículo — 6 modelos, PDF grátis</title>
+  <meta name="description" content="Gerador de currículo gratuito: preencha, escolha entre 6 modelos e baixe em PDF. Tudo no seu navegador, seus dados não saem do seu computador.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Gerador de Currículo</h1>
+      <p>6 modelos · PDF com texto selecionável (bom para ATS) · seus dados ficam só no seu navegador</p>
+    </div>
+    <div class="actions">
+      <label class="btn" for="fileLinkedin" title="Envie o ZIP da cópia dos seus dados do LinkedIn">Importar do LinkedIn</label>
+      <input type="file" id="fileLinkedin" accept=".zip,.csv,application/zip" multiple hidden>
+      <button type="button" id="btnExemplo" class="btn">Carregar exemplo</button>
+      <button type="button" id="btnLimpar" class="btn">Limpar</button>
+      <button type="button" id="btnExportar" class="btn">Salvar dados (.json)</button>
+      <label class="btn" for="fileImportar">Abrir dados</label>
+      <input type="file" id="fileImportar" accept="application/json,.json" hidden>
+      <button type="button" id="btnPdf" class="btn primary">Baixar PDF</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="panel" id="panel" aria-label="Edição do currículo">
+      <div id="msg" aria-live="polite"></div>
+      <div class="card tools">
+        <h2>Modelo</h2>
+        <div class="pills" id="pills" role="radiogroup" aria-label="Modelo do currículo"></div>
+        <div class="row3">
+          <label>Cor
+            <input type="color" id="accent" value="#1f4e79">
+          </label>
+          <label>Tamanho da letra <output id="fsOut">10,5</output> pt
+            <input type="range" id="fs" min="9" max="12" step="0.5" value="10.5">
+          </label>
+        </div>
+        <p class="hint" id="pagesInfo"></p>
+      </div>
+
+      <div class="card">
+        <h2>Dados pessoais</h2>
+        <div class="grid2">
+          <label>Nome completo <input data-k="nome" autocomplete="name"></label>
+          <label>Cargo desejado <input data-k="cargo" placeholder="Ex.: Desenvolvedor Full Stack"></label>
+          <label>E-mail <input data-k="email" type="email" autocomplete="email"></label>
+          <label>Telefone <input data-k="telefone" autocomplete="tel"></label>
+          <label>Cidade / Estado <input data-k="cidade"></label>
+          <label>LinkedIn <input data-k="linkedin" placeholder="linkedin.com/in/seu-usuario"></label>
+          <label class="span2">Site / GitHub / Portfólio <input data-k="site" placeholder="github.com/seu-usuario"></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Resumo profissional</h2>
+        <label>Em 2 ou 3 linhas, quem você é e o que busca
+          <textarea data-k="resumo" rows="4"></textarea>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Experiência profissional</h2>
+        <div id="list-experiencias"></div>
+        <button type="button" class="btn small" data-add="experiencias">+ Adicionar experiência</button>
+      </div>
+
+      <div class="card">
+        <h2>Formação acadêmica</h2>
+        <div id="list-formacoes"></div>
+        <button type="button" class="btn small" data-add="formacoes">+ Adicionar formação</button>
+      </div>
+
+      <div class="card">
+        <h2>Habilidades e idiomas</h2>
+        <label>Habilidades (separe por vírgula ou linha)
+          <textarea data-k="habilidades" rows="3" placeholder="JavaScript, PHP, SQL, Git"></textarea>
+        </label>
+        <label>Idiomas (separe por vírgula ou linha)
+          <textarea data-k="idiomas" rows="2" placeholder="Português (nativo), Inglês (intermediário)"></textarea>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Cursos e certificados</h2>
+        <div id="list-cursos"></div>
+        <button type="button" class="btn small" data-add="cursos">+ Adicionar curso</button>
+      </div>
+
+      <p class="hint foot">Dica: para o PDF, na janela de impressão escolha <strong>“Salvar como PDF”</strong>, papel <strong>A4</strong> e desligue “Cabeçalhos e rodapés”.</p>
+    </section>
+
+    <section class="preview" id="preview" aria-label="Prévia do currículo">
+      <div class="scale-box" id="scaleBox">
+        <article id="cv" class="cv t-classico"></article>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
