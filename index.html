@@ -10,32 +10,37 @@
 <body>
   <header class="topbar">
     <div class="brand">
-      <h1>Gerador de Currículo</h1>
-      <p>6 modelos · PDF com texto selecionável (bom para ATS) · seus dados ficam só no seu navegador</p>
+      <h1 data-t="brandTitle">Gerador de Currículo</h1>
+      <p data-t="brandSub">6 modelos · PDF com texto selecionável (bom para ATS) · seus dados ficam só no seu navegador</p>
     </div>
     <div class="actions">
-      <label class="btn" for="fileLinkedin" title="Envie o ZIP da cópia dos seus dados do LinkedIn">Importar do LinkedIn</label>
+      <select id="lang" class="btn lang" data-aria="langAria" aria-label="Idioma / Language / Idioma">
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+      </select>
+      <label class="btn" for="fileLinkedin" data-t="btnLinkedin" data-title="linkedinTitle" title="Envie o ZIP da cópia dos seus dados do LinkedIn">Importar do LinkedIn</label>
       <input type="file" id="fileLinkedin" accept=".zip,.csv,application/zip" multiple hidden>
-      <button type="button" id="btnExemplo" class="btn">Carregar exemplo</button>
-      <button type="button" id="btnLimpar" class="btn">Limpar</button>
-      <button type="button" id="btnExportar" class="btn">Salvar dados (.json)</button>
-      <label class="btn" for="fileImportar">Abrir dados</label>
+      <button type="button" id="btnExemplo" class="btn" data-t="btnExemplo">Carregar exemplo</button>
+      <button type="button" id="btnLimpar" class="btn" data-t="btnLimpar">Limpar</button>
+      <button type="button" id="btnExportar" class="btn" data-t="btnExportar">Salvar dados (.json)</button>
+      <label class="btn" for="fileImportar" data-t="btnAbrir">Abrir dados</label>
       <input type="file" id="fileImportar" accept="application/json,.json" hidden>
-      <button type="button" id="btnPdf" class="btn primary">Baixar PDF</button>
+      <button type="button" id="btnPdf" class="btn primary" data-t="btnPdf">Baixar PDF</button>
     </div>
   </header>
 
   <div class="layout">
-    <section class="panel" id="panel" aria-label="Edição do currículo">
+    <section class="panel" id="panel" data-aria="panelAria" aria-label="Edição do currículo">
       <div id="msg" aria-live="polite"></div>
       <div class="card tools">
-        <h2>Modelo</h2>
-        <div class="pills" id="pills" role="radiogroup" aria-label="Modelo do currículo"></div>
+        <h2 data-t="modelo">Modelo</h2>
+        <div class="pills" id="pills" role="radiogroup" data-aria="modeloAria" aria-label="Modelo do currículo"></div>
         <div class="row3">
-          <label>Cor
+          <label><span data-t="cor">Cor</span>
             <input type="color" id="accent" value="#1f4e79">
           </label>
-          <label>Tamanho da letra <output id="fsOut">10,5</output> pt
+          <label><span data-t="tamanho">Tamanho da letra</span> <output id="fsOut">10,5</output> pt
             <input type="range" id="fs" min="9" max="12" step="0.5" value="10.5">
           </label>
         </div>
@@ -43,57 +48,57 @@
       </div>
 
       <div class="card">
-        <h2>Dados pessoais</h2>
+        <h2 data-t="dadosH">Dados pessoais</h2>
         <div class="grid2">
-          <label>Nome completo <input data-k="nome" autocomplete="name"></label>
-          <label>Cargo desejado <input data-k="cargo" placeholder="Ex.: Desenvolvedor Full Stack"></label>
-          <label>E-mail <input data-k="email" type="email" autocomplete="email"></label>
-          <label>Telefone <input data-k="telefone" autocomplete="tel"></label>
-          <label>Cidade / Estado <input data-k="cidade"></label>
-          <label>LinkedIn <input data-k="linkedin" placeholder="linkedin.com/in/seu-usuario"></label>
-          <label class="span2">Site / GitHub / Portfólio <input data-k="site" placeholder="github.com/seu-usuario"></label>
+          <label><span data-t="nome">Nome completo</span> <input data-k="nome" autocomplete="name"></label>
+          <label><span data-t="cargo">Cargo desejado</span> <input data-k="cargo" data-ph="cargoPh" placeholder="Ex.: Desenvolvedor Full Stack"></label>
+          <label><span data-t="email">E-mail</span> <input data-k="email" type="email" autocomplete="email"></label>
+          <label><span data-t="telefone">Telefone</span> <input data-k="telefone" autocomplete="tel"></label>
+          <label><span data-t="cidade">Cidade / Estado</span> <input data-k="cidade"></label>
+          <label><span data-t="linkedin">LinkedIn</span> <input data-k="linkedin" data-ph="linkedinPh" placeholder="linkedin.com/in/seu-usuario"></label>
+          <label class="span2"><span data-t="site">Site / GitHub / Portfólio</span> <input data-k="site" data-ph="sitePh" placeholder="github.com/seu-usuario"></label>
         </div>
       </div>
 
       <div class="card">
-        <h2>Resumo profissional</h2>
-        <label>Em 2 ou 3 linhas, quem você é e o que busca
+        <h2 data-t="resumoH">Resumo profissional</h2>
+        <label><span data-t="resumoLbl">Em 2 ou 3 linhas, quem você é e o que busca</span>
           <textarea data-k="resumo" rows="4"></textarea>
         </label>
       </div>
 
       <div class="card">
-        <h2>Experiência profissional</h2>
+        <h2 data-t="expH">Experiência profissional</h2>
         <div id="list-experiencias"></div>
-        <button type="button" class="btn small" data-add="experiencias">+ Adicionar experiência</button>
+        <button type="button" class="btn small" data-add="experiencias" data-t="addExp">+ Adicionar experiência</button>
       </div>
 
       <div class="card">
-        <h2>Formação acadêmica</h2>
+        <h2 data-t="formH">Formação acadêmica</h2>
         <div id="list-formacoes"></div>
-        <button type="button" class="btn small" data-add="formacoes">+ Adicionar formação</button>
+        <button type="button" class="btn small" data-add="formacoes" data-t="addForm">+ Adicionar formação</button>
       </div>
 
       <div class="card">
-        <h2>Habilidades e idiomas</h2>
-        <label>Habilidades (separe por vírgula ou linha)
-          <textarea data-k="habilidades" rows="3" placeholder="JavaScript, PHP, SQL, Git"></textarea>
+        <h2 data-t="habIdiH">Habilidades e idiomas</h2>
+        <label><span data-t="habLbl">Habilidades (separe por vírgula ou linha)</span>
+          <textarea data-k="habilidades" rows="3" data-ph="habPh" placeholder="JavaScript, PHP, SQL, Git"></textarea>
         </label>
-        <label>Idiomas (separe por vírgula ou linha)
-          <textarea data-k="idiomas" rows="2" placeholder="Português (nativo), Inglês (intermediário)"></textarea>
+        <label><span data-t="idiLbl">Idiomas (separe por vírgula ou linha)</span>
+          <textarea data-k="idiomas" rows="2" data-ph="idiPh" placeholder="Português (nativo), Inglês (intermediário)"></textarea>
         </label>
       </div>
 
       <div class="card">
-        <h2>Cursos e certificados</h2>
+        <h2 data-t="cursosH">Cursos e certificados</h2>
         <div id="list-cursos"></div>
-        <button type="button" class="btn small" data-add="cursos">+ Adicionar curso</button>
+        <button type="button" class="btn small" data-add="cursos" data-t="addCurso">+ Adicionar curso</button>
       </div>
 
-      <p class="hint foot">Dica: para o PDF, na janela de impressão escolha <strong>“Salvar como PDF”</strong>, papel <strong>A4</strong> e desligue “Cabeçalhos e rodapés”.</p>
+      <p class="hint foot" data-html="dica">Dica: para o PDF, na janela de impressão escolha <strong>“Salvar como PDF”</strong>, papel <strong>A4</strong> e desligue “Cabeçalhos e rodapés”.</p>
     </section>
 
-    <section class="preview" id="preview" aria-label="Prévia do currículo">
+    <section class="preview" id="preview" data-aria="previewAria" aria-label="Prévia do currículo">
       <div class="scale-box" id="scaleBox">
         <article id="cv" class="cv t-classico"></article>
       </div>
