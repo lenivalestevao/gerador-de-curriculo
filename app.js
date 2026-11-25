@@ -8,34 +8,133 @@
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
   const TEMPLATES = [
-    ['classico', 'Clássico'], ['moderno', 'Moderno'], ['minimalista', 'Minimalista'],
-    ['executivo', 'Executivo'], ['criativo', 'Criativo'], ['compacto', 'Compacto']
+    ['classico'], ['moderno'], ['minimalista'], ['executivo'], ['criativo'], ['compacto']
   ];
+
+  // ---------- idiomas (interface + títulos do currículo) ----------
+  const I18N = {
+    pt: {
+      title: 'Gerador de Currículo — 6 modelos, PDF grátis',
+      desc: 'Gerador de currículo gratuito: preencha, escolha entre 6 modelos e baixe em PDF. Tudo no seu navegador, seus dados não saem do seu computador.',
+      brandTitle: 'Gerador de Currículo',
+      brandSub: '6 modelos · PDF com texto selecionável (bom para ATS) · seus dados ficam só no seu navegador',
+      langAria: 'Idioma / Language / Idioma',
+      btnLinkedin: 'Importar do LinkedIn', linkedinTitle: 'Envie o ZIP da cópia dos seus dados do LinkedIn',
+      btnExemplo: 'Carregar exemplo', btnLimpar: 'Limpar', btnExportar: 'Salvar dados (.json)', btnAbrir: 'Abrir dados', btnPdf: 'Baixar PDF',
+      panelAria: 'Edição do currículo', previewAria: 'Prévia do currículo',
+      modelo: 'Modelo', modeloAria: 'Modelo do currículo', cor: 'Cor', tamanho: 'Tamanho da letra',
+      dadosH: 'Dados pessoais', nome: 'Nome completo', cargo: 'Cargo desejado', cargoPh: 'Ex.: Desenvolvedor Full Stack',
+      email: 'E-mail', telefone: 'Telefone', cidade: 'Cidade / Estado', linkedin: 'LinkedIn', linkedinPh: 'linkedin.com/in/seu-usuario',
+      site: 'Site / GitHub / Portfólio', sitePh: 'github.com/seu-usuario',
+      resumoH: 'Resumo profissional', resumoLbl: 'Em 2 ou 3 linhas, quem você é e o que busca',
+      expH: 'Experiência profissional', addExp: '+ Adicionar experiência',
+      formH: 'Formação acadêmica', addForm: '+ Adicionar formação',
+      habIdiH: 'Habilidades e idiomas', habLbl: 'Habilidades (separe por vírgula ou linha)', habPh: 'JavaScript, PHP, SQL, Git',
+      idiLbl: 'Idiomas (separe por vírgula ou linha)', idiPh: 'Português (nativo), Inglês (intermediário)',
+      cursosH: 'Cursos e certificados', addCurso: '+ Adicionar curso',
+      dica: 'Dica: para o PDF, na janela de impressão escolha <strong>“Salvar como PDF”</strong>, papel <strong>A4</strong> e desligue “Cabeçalhos e rodapés”.',
+      tpl_classico: 'Clássico', tpl_moderno: 'Moderno', tpl_minimalista: 'Minimalista', tpl_executivo: 'Executivo', tpl_criativo: 'Criativo', tpl_compacto: 'Compacto',
+      fCargo: 'Cargo', fEmpresa: 'Empresa', fPeriodo: 'Período', phExp: 'Jan/2022 – atual', fDesc: 'Atividades e resultados (uma por linha)',
+      fCurso: 'Curso / grau', fInst: 'Instituição', phForm: '2018 – 2022', fCursoNome: 'Curso ou certificado', fAno: 'Ano',
+      up: 'Mover para cima', down: 'Mover para baixo', del: 'Remover', undo: 'Desfazer',
+      pages1: 'O currículo ocupa 1 página A4.', pagesN: 'O currículo ocupa {n} páginas A4. Para caber em 1, reduza o tamanho da letra ou o texto.',
+      msgExemplo: 'Exemplo carregado.', msgLimpo: 'Currículo limpo.', msgAberto: 'Dados abertos.',
+      errJson: 'Não consegui ler esse arquivo. Use um .json salvo por este gerador.',
+      msgLi: 'Dados do LinkedIn importados. Confira os textos e ajuste o que quiser.',
+      errLi: 'Não encontrei dados do LinkedIn nesses arquivos. Envie o ZIP da cópia dos seus dados (ou os arquivos Profile.csv, Positions.csv, Education.csv, Skills.csv).',
+      pdfTitle: 'Curriculo', semNome: 'sem nome', atual: 'atual'
+    },
+    en: {
+      title: 'Resume Builder — 6 templates, free PDF',
+      desc: 'Free resume builder: fill in your details, pick one of 6 templates and download a PDF. Everything runs in your browser; your data never leaves your computer.',
+      brandTitle: 'Resume Builder',
+      brandSub: '6 templates · PDF with selectable text (ATS friendly) · your data stays in your browser',
+      langAria: 'Idioma / Language / Idioma',
+      btnLinkedin: 'Import from LinkedIn', linkedinTitle: 'Upload the ZIP of your LinkedIn data export',
+      btnExemplo: 'Load example', btnLimpar: 'Clear', btnExportar: 'Save data (.json)', btnAbrir: 'Open data', btnPdf: 'Download PDF',
+      panelAria: 'Resume editor', previewAria: 'Resume preview',
+      modelo: 'Template', modeloAria: 'Resume template', cor: 'Color', tamanho: 'Font size',
+      dadosH: 'Personal details', nome: 'Full name', cargo: 'Target job title', cargoPh: 'e.g. Full Stack Developer',
+      email: 'Email', telefone: 'Phone', cidade: 'City / State', linkedin: 'LinkedIn', linkedinPh: 'linkedin.com/in/your-name',
+      site: 'Website / GitHub / Portfolio', sitePh: 'github.com/your-name',
+      resumoH: 'Professional summary', resumoLbl: 'In 2 or 3 lines, who you are and what you are looking for',
+      expH: 'Work experience', addExp: '+ Add experience',
+      formH: 'Education', addForm: '+ Add education',
+      habIdiH: 'Skills and languages', habLbl: 'Skills (separate with commas or new lines)', habPh: 'JavaScript, PHP, SQL, Git',
+      idiLbl: 'Languages (separate with commas or new lines)', idiPh: 'Portuguese (native), English (intermediate)',
+      cursosH: 'Courses and certifications', addCurso: '+ Add course',
+      dica: 'Tip: for the PDF, in the print window choose <strong>“Save as PDF”</strong>, paper size <strong>A4</strong> (or Letter) and turn off “Headers and footers”.',
+      tpl_classico: 'Classic', tpl_moderno: 'Modern', tpl_minimalista: 'Minimalist', tpl_executivo: 'Executive', tpl_criativo: 'Creative', tpl_compacto: 'Compact',
+      fCargo: 'Job title', fEmpresa: 'Company', fPeriodo: 'Period', phExp: 'Jan 2022 – Present', fDesc: 'Duties and achievements (one per line)',
+      fCurso: 'Degree / program', fInst: 'School', phForm: '2018 – 2022', fCursoNome: 'Course or certification', fAno: 'Year',
+      up: 'Move up', down: 'Move down', del: 'Remove', undo: 'Undo',
+      pages1: 'The resume fits on 1 A4 page.', pagesN: 'The resume takes {n} A4 pages. To fit on 1, reduce the font size or the text.',
+      msgExemplo: 'Example loaded.', msgLimpo: 'Resume cleared.', msgAberto: 'Data opened.',
+      errJson: 'I could not read that file. Use a .json saved by this builder.',
+      msgLi: 'LinkedIn data imported. Review the text and adjust what you like.',
+      errLi: 'I did not find LinkedIn data in those files. Upload the ZIP of your data export (or the files Profile.csv, Positions.csv, Education.csv, Skills.csv).',
+      pdfTitle: 'Resume', semNome: 'no name', atual: 'Present'
+    },
+    es: {
+      title: 'Generador de Currículum — 6 plantillas, PDF gratis',
+      desc: 'Generador de currículum gratuito: completa tus datos, elige entre 6 plantillas y descarga el PDF. Todo en tu navegador, tus datos no salen de tu computadora.',
+      brandTitle: 'Generador de Currículum',
+      brandSub: '6 plantillas · PDF con texto seleccionable (apto para ATS) · tus datos quedan solo en tu navegador',
+      langAria: 'Idioma / Language / Idioma',
+      btnLinkedin: 'Importar de LinkedIn', linkedinTitle: 'Sube el ZIP con la copia de tus datos de LinkedIn',
+      btnExemplo: 'Cargar ejemplo', btnLimpar: 'Limpiar', btnExportar: 'Guardar datos (.json)', btnAbrir: 'Abrir datos', btnPdf: 'Descargar PDF',
+      panelAria: 'Edición del currículum', previewAria: 'Vista previa del currículum',
+      modelo: 'Plantilla', modeloAria: 'Plantilla del currículum', cor: 'Color', tamanho: 'Tamaño de letra',
+      dadosH: 'Datos personales', nome: 'Nombre completo', cargo: 'Puesto deseado', cargoPh: 'Ej.: Desarrollador Full Stack',
+      email: 'Correo electrónico', telefone: 'Teléfono', cidade: 'Ciudad / Estado', linkedin: 'LinkedIn', linkedinPh: 'linkedin.com/in/tu-usuario',
+      site: 'Sitio web / GitHub / Portafolio', sitePh: 'github.com/tu-usuario',
+      resumoH: 'Resumen profesional', resumoLbl: 'En 2 o 3 líneas, quién eres y qué buscas',
+      expH: 'Experiencia laboral', addExp: '+ Agregar experiencia',
+      formH: 'Formación académica', addForm: '+ Agregar formación',
+      habIdiH: 'Habilidades e idiomas', habLbl: 'Habilidades (separa con comas o líneas)', habPh: 'JavaScript, PHP, SQL, Git',
+      idiLbl: 'Idiomas (separa con comas o líneas)', idiPh: 'Español (nativo), Inglés (intermedio)',
+      cursosH: 'Cursos y certificados', addCurso: '+ Agregar curso',
+      dica: 'Consejo: para el PDF, en la ventana de impresión elige <strong>“Guardar como PDF”</strong>, papel <strong>A4</strong> (o Carta) y desactiva “Encabezados y pies de página”.',
+      tpl_classico: 'Clásico', tpl_moderno: 'Moderno', tpl_minimalista: 'Minimalista', tpl_executivo: 'Ejecutivo', tpl_criativo: 'Creativo', tpl_compacto: 'Compacto',
+      fCargo: 'Puesto', fEmpresa: 'Empresa', fPeriodo: 'Período', phExp: 'Ene 2022 – actual', fDesc: 'Actividades y logros (una por línea)',
+      fCurso: 'Carrera / título', fInst: 'Institución', phForm: '2018 – 2022', fCursoNome: 'Curso o certificado', fAno: 'Año',
+      up: 'Subir', down: 'Bajar', del: 'Eliminar', undo: 'Deshacer',
+      pages1: 'El currículum ocupa 1 página A4.', pagesN: 'El currículum ocupa {n} páginas A4. Para que quepa en 1, reduce el tamaño de letra o el texto.',
+      msgExemplo: 'Ejemplo cargado.', msgLimpo: 'Currículum limpio.', msgAberto: 'Datos abiertos.',
+      errJson: 'No pude leer ese archivo. Usa un .json guardado por este generador.',
+      msgLi: 'Datos de LinkedIn importados. Revisa los textos y ajusta lo que quieras.',
+      errLi: 'No encontré datos de LinkedIn en esos archivos. Sube el ZIP de la copia de tus datos (o los archivos Profile.csv, Positions.csv, Education.csv, Skills.csv).',
+      pdfTitle: 'Curriculum', semNome: 'sin nombre', atual: 'actual'
+    }
+  };
+
+  const LABELS = {
+    pt: { contato: 'Contato', habilidades: 'Habilidades', idiomas: 'Idiomas', resumo: 'Resumo profissional', experiencia: 'Experiência profissional', formacao: 'Formação acadêmica', cursos: 'Cursos e certificados', nome: 'Seu Nome' },
+    en: { contato: 'Contact', habilidades: 'Skills', idiomas: 'Languages', resumo: 'Professional summary', experiencia: 'Professional experience', formacao: 'Education', cursos: 'Courses and certifications', nome: 'Your Name' },
+    es: { contato: 'Contacto', habilidades: 'Habilidades', idiomas: 'Idiomas', resumo: 'Resumen profesional', experiencia: 'Experiencia profesional', formacao: 'Formación académica', cursos: 'Cursos y certificados', nome: 'Tu Nombre' }
+  };
 
   const LISTS = {
     experiencias: {
-      nome: 'Experiência',
       vazio: { cargo: '', empresa: '', periodo: '', descricao: '' },
       campos: [
-        ['cargo', 'Cargo', 'input'], ['empresa', 'Empresa', 'input'],
-        ['periodo', 'Período', 'input', 'Jan/2022 – atual'],
-        ['descricao', 'Atividades e resultados (uma por linha)', 'textarea']
+        ['cargo', 'fCargo', 'input'], ['empresa', 'fEmpresa', 'input'],
+        ['periodo', 'fPeriodo', 'input', 'phExp'],
+        ['descricao', 'fDesc', 'textarea']
       ]
     },
     formacoes: {
-      nome: 'Formação',
       vazio: { curso: '', instituicao: '', periodo: '' },
       campos: [
-        ['curso', 'Curso / grau', 'input'], ['instituicao', 'Instituição', 'input'],
-        ['periodo', 'Período', 'input', '2018 – 2022']
+        ['curso', 'fCurso', 'input'], ['instituicao', 'fInst', 'input'],
+        ['periodo', 'fPeriodo', 'input', 'phForm']
       ]
     },
     cursos: {
-      nome: 'Curso',
       vazio: { nome: '', instituicao: '', ano: '' },
       campos: [
-        ['nome', 'Curso ou certificado', 'input'], ['instituicao', 'Instituição', 'input'],
-        ['ano', 'Ano', 'input', '2024']
+        ['nome', 'fCursoNome', 'input'], ['instituicao', 'fInst', 'input'],
+        ['ano', 'fAno', 'input', 'phForm']
       ]
     }
   };
@@ -45,39 +144,76 @@
     experiencias: [], formacoes: [], habilidades: '', idiomas: '', cursos: []
   };
 
-  const EXEMPLO = {
-    nome: 'Camila Ribeiro',
-    cargo: 'Desenvolvedora Full Stack',
-    email: 'camila.ribeiro@email.com',
-    telefone: '(81) 90000-0000',
-    cidade: 'Recife, PE',
-    linkedin: 'linkedin.com/in/camila-ribeiro',
-    site: 'github.com/camila-ribeiro',
-    resumo: 'Desenvolvedora com 6 anos de experiência em aplicações web e APIs, do banco de dados à interface. Foco em código limpo, testes e entregas que melhoram a rotina de quem usa o sistema.',
-    experiencias: [
-      {
-        cargo: 'Desenvolvedora Full Stack Sênior', empresa: 'Tecnologia Exemplo Ltda.', periodo: 'Mar/2022 – atual',
-        descricao: 'Liderei a migração de um sistema legado em PHP para uma API em .NET, reduzindo o tempo de resposta em 40%\nCriei o painel de relatórios em React usado por 300 clientes\nMentoria de 3 desenvolvedores júnior e revisão de código do time'
-      },
-      {
-        cargo: 'Desenvolvedora Pleno', empresa: 'Soluções Digitais S.A.', periodo: 'Jan/2020 – Fev/2022',
-        descricao: 'Desenvolvi módulos de cobrança e emissão de notas fiscais\nAutomatizei testes e publicações, cortando o tempo de entrega de 2 dias para 2 horas'
-      },
-      {
-        cargo: 'Desenvolvedora Júnior', empresa: 'Agência Web Criativa', periodo: 'Jun/2018 – Dez/2019',
-        descricao: 'Sites e lojas virtuais em PHP, MySQL e JavaScript\nAtendimento direto aos clientes para levantar requisitos'
-      }
-    ],
-    formacoes: [
-      { curso: 'Bacharelado em Sistemas de Informação', instituicao: 'Universidade Federal de Pernambuco', periodo: '2014 – 2018' },
-      { curso: 'Pós-graduação em Arquitetura de Software', instituicao: 'Instituto de Tecnologia', periodo: '2021 – 2022' }
-    ],
-    habilidades: 'JavaScript, TypeScript, React, Node.js, C# / .NET, PHP, SQL Server, PostgreSQL, Git, Docker, Testes automatizados',
-    idiomas: 'Português (nativo), Inglês (avançado), Espanhol (básico)',
-    cursos: [
-      { nome: 'AWS Certified Cloud Practitioner', instituicao: 'Amazon Web Services', ano: '2023' },
-      { nome: 'Scrum Foundation', instituicao: 'Scrum Alliance', ano: '2021' }
-    ]
+  const EXEMPLOS = {
+    pt: {
+      nome: 'Camila Ribeiro', cargo: 'Desenvolvedora Full Stack', email: 'camila.ribeiro@email.com', telefone: '(81) 90000-0000',
+      cidade: 'Recife, PE', linkedin: 'linkedin.com/in/camila-ribeiro', site: 'github.com/camila-ribeiro',
+      resumo: 'Desenvolvedora com 6 anos de experiência em aplicações web e APIs, do banco de dados à interface. Foco em código limpo, testes e entregas que melhoram a rotina de quem usa o sistema.',
+      experiencias: [
+        { cargo: 'Desenvolvedora Full Stack Sênior', empresa: 'Tecnologia Exemplo Ltda.', periodo: 'Mar/2022 – atual',
+          descricao: 'Liderei a migração de um sistema legado em PHP para uma API em .NET, reduzindo o tempo de resposta em 40%\nCriei o painel de relatórios em React usado por 300 clientes\nMentoria de 3 desenvolvedores júnior e revisão de código do time' },
+        { cargo: 'Desenvolvedora Pleno', empresa: 'Soluções Digitais S.A.', periodo: 'Jan/2020 – Fev/2022',
+          descricao: 'Desenvolvi módulos de cobrança e emissão de notas fiscais\nAutomatizei testes e publicações, cortando o tempo de entrega de 2 dias para 2 horas' },
+        { cargo: 'Desenvolvedora Júnior', empresa: 'Agência Web Criativa', periodo: 'Jun/2018 – Dez/2019',
+          descricao: 'Sites e lojas virtuais em PHP, MySQL e JavaScript\nAtendimento direto aos clientes para levantar requisitos' }
+      ],
+      formacoes: [
+        { curso: 'Bacharelado em Sistemas de Informação', instituicao: 'Universidade Federal de Pernambuco', periodo: '2014 – 2018' },
+        { curso: 'Pós-graduação em Arquitetura de Software', instituicao: 'Instituto de Tecnologia', periodo: '2021 – 2022' }
+      ],
+      habilidades: 'JavaScript, TypeScript, React, Node.js, C# / .NET, PHP, SQL Server, PostgreSQL, Git, Docker, Testes automatizados',
+      idiomas: 'Português (nativo), Inglês (avançado), Espanhol (básico)',
+      cursos: [
+        { nome: 'AWS Certified Cloud Practitioner', instituicao: 'Amazon Web Services', ano: '2023' },
+        { nome: 'Scrum Foundation', instituicao: 'Scrum Alliance', ano: '2021' }
+      ]
+    },
+    en: {
+      nome: 'Camila Ribeiro', cargo: 'Full Stack Developer', email: 'camila.ribeiro@email.com', telefone: '(81) 90000-0000',
+      cidade: 'Recife, PE', linkedin: 'linkedin.com/in/camila-ribeiro', site: 'github.com/camila-ribeiro',
+      resumo: 'Developer with 6 years of experience in web applications and APIs, from the database to the interface. Focused on clean code, testing and deliveries that make life easier for the people who use the system.',
+      experiencias: [
+        { cargo: 'Senior Full Stack Developer', empresa: 'Example Technology Ltd.', periodo: 'Mar 2022 – Present',
+          descricao: 'Led the migration of a legacy PHP system to a .NET API, cutting response time by 40%\nBuilt the React reporting dashboard used by 300 customers\nMentored 3 junior developers and reviewed the team’s code' },
+        { cargo: 'Mid-level Developer', empresa: 'Digital Solutions Inc.', periodo: 'Jan 2020 – Feb 2022',
+          descricao: 'Developed billing and invoice issuing modules\nAutomated tests and releases, cutting delivery time from 2 days to 2 hours' },
+        { cargo: 'Junior Developer', empresa: 'Creative Web Agency', periodo: 'Jun 2018 – Dec 2019',
+          descricao: 'Websites and online stores in PHP, MySQL and JavaScript\nWorked directly with clients to gather requirements' }
+      ],
+      formacoes: [
+        { curso: 'Bachelor’s Degree in Information Systems', instituicao: 'Federal University of Pernambuco', periodo: '2014 – 2018' },
+        { curso: 'Postgraduate Certificate in Software Architecture', instituicao: 'Institute of Technology', periodo: '2021 – 2022' }
+      ],
+      habilidades: 'JavaScript, TypeScript, React, Node.js, C# / .NET, PHP, SQL Server, PostgreSQL, Git, Docker, Automated testing',
+      idiomas: 'Portuguese (native), English (advanced), Spanish (basic)',
+      cursos: [
+        { nome: 'AWS Certified Cloud Practitioner', instituicao: 'Amazon Web Services', ano: '2023' },
+        { nome: 'Scrum Foundation', instituicao: 'Scrum Alliance', ano: '2021' }
+      ]
+    },
+    es: {
+      nome: 'Camila Ribeiro', cargo: 'Desarrolladora Full Stack', email: 'camila.ribeiro@email.com', telefone: '(81) 90000-0000',
+      cidade: 'Recife, PE', linkedin: 'linkedin.com/in/camila-ribeiro', site: 'github.com/camila-ribeiro',
+      resumo: 'Desarrolladora con 6 años de experiencia en aplicaciones web y APIs, de la base de datos a la interfaz. Enfocada en código limpio, pruebas y entregas que mejoran el día a día de quienes usan el sistema.',
+      experiencias: [
+        { cargo: 'Desarrolladora Full Stack Senior', empresa: 'Tecnología Ejemplo S.A.', periodo: 'Mar 2022 – actual',
+          descricao: 'Lideré la migración de un sistema heredado en PHP a una API en .NET, reduciendo el tiempo de respuesta en un 40%\nCreé el panel de reportes en React usado por 300 clientes\nMentoría de 3 desarrolladores junior y revisión de código del equipo' },
+        { cargo: 'Desarrolladora Semi Senior', empresa: 'Soluciones Digitales S.A.', periodo: 'Ene 2020 – Feb 2022',
+          descricao: 'Desarrollé módulos de facturación y emisión de comprobantes\nAutomaticé pruebas y publicaciones, reduciendo el tiempo de entrega de 2 días a 2 horas' },
+        { cargo: 'Desarrolladora Junior', empresa: 'Agencia Web Creativa', periodo: 'Jun 2018 – Dic 2019',
+          descricao: 'Sitios web y tiendas en línea en PHP, MySQL y JavaScript\nAtención directa a los clientes para levantar requisitos' }
+      ],
+      formacoes: [
+        { curso: 'Licenciatura en Sistemas de Información', instituicao: 'Universidad Federal de Pernambuco', periodo: '2014 – 2018' },
+        { curso: 'Posgrado en Arquitectura de Software', instituicao: 'Instituto de Tecnología', periodo: '2021 – 2022' }
+      ],
+      habilidades: 'JavaScript, TypeScript, React, Node.js, C# / .NET, PHP, SQL Server, PostgreSQL, Git, Docker, Pruebas automatizadas',
+      idiomas: 'Portugués (nativo), Inglés (avanzado), Español (básico)',
+      cursos: [
+        { nome: 'AWS Certified Cloud Practitioner', instituicao: 'Amazon Web Services', ano: '2023' },
+        { nome: 'Scrum Foundation', instituicao: 'Scrum Alliance', ano: '2021' }
+      ]
+    }
   };
 
   const clone = (o) => JSON.parse(JSON.stringify(o));
@@ -105,9 +241,27 @@
     try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; }
   }
   const saved = loadSaved();
-  const state = { data: saved && saved.data ? normalize(saved.data) : clone(EXEMPLO) };
-  const cfg = Object.assign({ tpl: 'classico', accent: '#1f4e79', fs: 10.5 }, saved && saved.cfg);
+  const navLang = String(navigator.language || 'pt').slice(0, 2).toLowerCase();
+  const cfg = Object.assign({ tpl: 'classico', lang: I18N[navLang] ? navLang : 'pt', accent: '#1f4e79', fs: 10.5 }, saved && saved.cfg);
   if (!TEMPLATES.some((t) => t[0] === cfg.tpl)) cfg.tpl = 'classico';
+  if (!I18N[cfg.lang]) cfg.lang = 'pt';
+  const state = { data: saved && saved.data ? normalize(saved.data) : clone(EXEMPLOS[cfg.lang]) };
+  const t = (k, n) => {
+    const s = (I18N[cfg.lang] && I18N[cfg.lang][k]) || I18N.pt[k] || k;
+    return n === undefined ? s : s.replace('{n}', n);
+  };
+
+  // aplica o idioma aos textos fixos da página
+  function applyStatic() {
+    document.documentElement.lang = cfg.lang === 'pt' ? 'pt-BR' : cfg.lang;
+    document.title = t('title');
+    const md = $('meta[name="description"]'); if (md) md.setAttribute('content', t('desc'));
+    $$('[data-t]').forEach((el) => { el.textContent = t(el.dataset.t); });
+    $$('[data-html]').forEach((el) => { el.innerHTML = t(el.dataset.html); });
+    $$('[data-ph]').forEach((el) => { el.placeholder = t(el.dataset.ph); });
+    $$('[data-title]').forEach((el) => { el.title = t(el.dataset.title); });
+    $$('[data-aria]').forEach((el) => { el.setAttribute('aria-label', t(el.dataset.aria)); });
+  }
   let undoData = null;
 
   function save() {
@@ -124,6 +278,7 @@
 
   function renderCV() {
     const d = state.data;
+    const L = LABELS[cfg.lang];
     const cv = $('#cv');
     cv.className = 'cv t-' + cfg.tpl;
     cv.style.setProperty('--accent', cfg.accent);
@@ -143,16 +298,16 @@
     const idi = splitList(d.idiomas);
 
     const side =
-      sec('contato', 'Contato', contatos.length ? `<ul class="lista">${contatos.map((c) => `<li>${c}</li>`).join('')}</ul>` : '') +
-      sec('habilidades', 'Habilidades', hab.length ? `<ul class="chips">${hab.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
-      sec('idiomas', 'Idiomas', idi.length ? `<ul class="chips">${idi.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '');
+      sec('contato', L.contato, contatos.length ? `<ul class="lista">${contatos.map((c) => `<li>${c}</li>`).join('')}</ul>` : '') +
+      sec('habilidades', L.habilidades, hab.length ? `<ul class="chips">${hab.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '') +
+      sec('idiomas', L.idiomas, idi.length ? `<ul class="chips">${idi.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '');
 
     const main =
-      `<header data-s="header"><h1>${esc(d.nome || 'Seu Nome')}</h1>${d.cargo ? `<p class="cargo">${esc(d.cargo)}</p>` : ''}</header>` +
-      sec('resumo', 'Resumo profissional', d.resumo.trim() ? `<p>${esc(d.resumo.trim())}</p>` : '') +
-      sec('experiencia', 'Experiência profissional', exp) +
-      sec('formacao', 'Formação acadêmica', form) +
-      sec('cursos', 'Cursos e certificados', cur);
+      `<header data-s="header"><h1>${esc(d.nome || L.nome)}</h1>${d.cargo ? `<p class="cargo">${esc(d.cargo)}</p>` : ''}</header>` +
+      sec('resumo', L.resumo, d.resumo.trim() ? `<p>${esc(d.resumo.trim())}</p>` : '') +
+      sec('experiencia', L.experiencia, exp) +
+      sec('formacao', L.formacao, form) +
+      sec('cursos', L.cursos, cur);
 
     cv.innerHTML = `<div class="cv-side">${side}</div><div class="cv-main">${main}</div>`;
     fit();
@@ -164,7 +319,7 @@
     cv.style.transform = 'none';
     cv.style.minHeight = '';
     const pageH = 297 * 96 / 25.4;
-    const pages = Math.max(1, Math.ceil(cv.offsetHeight / pageH - 0.02));
+    const pages = Math.max(1, Math.ceil(cv.offsetHeight / pageH - 0.001));
     // sempre páginas A4 inteiras (a faixa colorida dos modelos com barra lateral vai até o fim)
     cv.style.minHeight = `${pages * 297 - 1}mm`;
     const cvW = cv.offsetWidth, cvH = cv.offsetHeight;
@@ -173,22 +328,22 @@
     box.style.width = cvW * s + 'px';
     box.style.height = cvH * s + 'px';
     $('#pagesInfo').textContent = pages === 1
-      ? 'O currículo ocupa 1 página A4.'
-      : `O currículo ocupa ${pages} páginas A4. Para caber em 1, reduza o tamanho da letra ou o texto.`;
+      ? t('pages1')
+      : t('pagesN', pages);
   }
 
   // ---------- formulário ----------
   function renderPills() {
-    $('#pills').innerHTML = TEMPLATES.map(([id, nome]) =>
-      `<button type="button" class="pill" role="radio" aria-checked="${id === cfg.tpl}" data-tpl="${id}">${nome}</button>`).join('');
+    $('#pills').innerHTML = TEMPLATES.map(([id]) =>
+      `<button type="button" class="pill" role="radio" aria-checked="${id === cfg.tpl}" data-tpl="${id}">${t('tpl_' + id)}</button>`).join('');
   }
 
   function fieldHTML(lista, i, [f, rotulo, tipo, ph], valor) {
-    const attrs = `data-f="${f}"${ph ? ` placeholder="${esc(ph)}"` : ''}`;
+    const attrs = `data-f="${f}"${ph ? ` placeholder="${esc(t(ph))}"` : ''}`;
     const campo = tipo === 'textarea'
       ? `<textarea ${attrs} rows="4">${esc(valor)}</textarea>`
       : `<input ${attrs} value="${esc(valor)}">`;
-    return `<label>${rotulo} ${campo}</label>`;
+    return `<label>${t(rotulo)} ${campo}</label>`;
   }
 
   function renderLists() {
@@ -198,9 +353,9 @@
         <div class="item-card" data-list="${nome}" data-i="${i}">
           ${def.campos.map((c) => fieldHTML(nome, i, c, it[c[0]])).join('')}
           <div class="item-tools">
-            <button type="button" class="btn small" data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="Mover para cima">↑</button>
-            <button type="button" class="btn small" data-act="down" ${i === itens.length - 1 ? 'disabled' : ''} aria-label="Mover para baixo">↓</button>
-            <button type="button" class="btn small danger" data-act="del">Remover</button>
+            <button type="button" class="btn small" data-act="up" ${i === 0 ? 'disabled' : ''} aria-label="${esc(t('up'))}">↑</button>
+            <button type="button" class="btn small" data-act="down" ${i === itens.length - 1 ? 'disabled' : ''} aria-label="${esc(t('down'))}">↓</button>
+            <button type="button" class="btn small danger" data-act="del">${t('del')}</button>
           </div>
         </div>`).join('');
     }
@@ -209,18 +364,19 @@
   function fillStatic() {
     $$('[data-k]').forEach((el) => { el.value = state.data[el.dataset.k] || ''; });
     $('#accent').value = cfg.accent;
+    $('#lang').value = cfg.lang;
     $('#fs').value = cfg.fs;
-    $('#fsOut').textContent = String(cfg.fs).replace('.', ',');
+    $('#fsOut').textContent = String(cfg.fs).replace('.', cfg.lang === 'en' ? '.' : ',');
   }
 
   function renderAll() {
-    fillStatic(); renderPills(); renderLists(); renderCV();
+    applyStatic(); fillStatic(); renderPills(); renderLists(); renderCV();
   }
 
   // ---------- avisos e desfazer ----------
   function aviso(texto, { desfazer = false, tipo = '' } = {}) {
     const m = $('#msg');
-    m.innerHTML = `<div class="notice ${tipo}">${esc(texto)} ${desfazer ? '<button type="button" class="btn small" id="btnDesfazer">Desfazer</button>' : ''}</div>`;
+    m.innerHTML = `<div class="notice ${tipo}">${esc(texto)} ${desfazer ? '<button type="button" class="btn small" id="btnDesfazer">' + esc(t('undo')) + '</button>' : ''}</div>`;
     const b = $('#btnDesfazer');
     if (b) b.onclick = () => { if (undoData) { state.data = undoData; undoData = null; save(); renderAll(); m.innerHTML = ''; } };
   }
@@ -230,7 +386,6 @@
     save(); renderAll();
     aviso(texto, { desfazer: true });
   }
-
   // ---------- eventos ----------
   $('#panel').addEventListener('input', (e) => {
     const t = e.target;
@@ -269,23 +424,23 @@
     if (pill) { cfg.tpl = pill.dataset.tpl; save(); renderPills(); renderCV(); }
   });
 
+  $('#lang').addEventListener('change', (e) => { cfg.lang = e.target.value; save(); $('#msg').innerHTML = ''; renderAll(); });
   $('#accent').addEventListener('input', (e) => { cfg.accent = e.target.value; save(); renderCV(); });
   $('#fs').addEventListener('input', (e) => {
     cfg.fs = parseFloat(e.target.value);
-    $('#fsOut').textContent = String(cfg.fs).replace('.', ',');
+    $('#fsOut').textContent = String(cfg.fs).replace('.', cfg.lang === 'en' ? '.' : ',');
     save(); renderCV();
   });
 
-  $('#btnExemplo').onclick = () => trocarDados(EXEMPLO, 'Exemplo carregado.');
-  $('#btnLimpar').onclick = () => trocarDados(VAZIO, 'Currículo limpo.');
+  $('#btnExemplo').onclick = () => trocarDados(EXEMPLOS[cfg.lang], t('msgExemplo'));
+  $('#btnLimpar').onclick = () => trocarDados(VAZIO, t('msgLimpo'));
 
   // PDF: a impressão do navegador gera PDF com texto de verdade (selecionável e legível por ATS)
-  const tituloOriginal = document.title;
   $('#btnPdf').onclick = () => {
-    document.title = 'Curriculo - ' + (state.data.nome || 'sem nome');
+    document.title = t('pdfTitle') + ' - ' + (state.data.nome || t('semNome'));
     window.print();
   };
-  window.addEventListener('afterprint', () => { document.title = tituloOriginal; });
+  window.addEventListener('afterprint', () => { document.title = t('title'); });
 
   window.addEventListener('resize', fit);
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe($('#preview'));
@@ -307,9 +462,9 @@
     if (!f) return;
     try {
       const j = JSON.parse(await f.text());
-      if (j.cfg && TEMPLATES.some((t) => t[0] === j.cfg.tpl)) Object.assign(cfg, { tpl: j.cfg.tpl, accent: j.cfg.accent || cfg.accent, fs: j.cfg.fs || cfg.fs });
-      trocarDados(j.data || j, 'Dados abertos.');
-    } catch { aviso('Não consegui ler esse arquivo. Use um .json salvo por este gerador.', { tipo: 'warn' }); }
+      if (j.cfg && TEMPLATES.some((t) => t[0] === j.cfg.tpl)) Object.assign(cfg, { tpl: j.cfg.tpl, lang: LABELS[j.cfg.lang] ? j.cfg.lang : cfg.lang, accent: j.cfg.accent || cfg.accent, fs: j.cfg.fs || cfg.fs });
+      trocarDados(j.data || j, t('msgAberto'));
+    } catch { aviso(t('errJson'), { tipo: 'warn' }); }
   };
 
   // ---------- importar do LinkedIn (ZIP ou CSVs da "cópia dos seus dados") ----------
@@ -367,7 +522,7 @@
 
   const periodo = (ini, fim) => {
     if (!ini && !fim) return '';
-    return `${ini || ''} – ${fim || 'atual'}`.trim();
+    return `${ini || ''} – ${fim || t('atual')}`.trim();
   };
 
   function mapearLinkedIn(csv) {
@@ -415,9 +570,9 @@
       // mantém o que o LinkedIn não traz (telefone, site, LinkedIn)
       for (const k of ['telefone', 'linkedin', 'site']) dados[k] = state.data[k];
       if (!dados.email) dados.email = state.data.email;
-      trocarDados(dados, 'Dados do LinkedIn importados. Confira os textos e ajuste o que quiser.');
+      trocarDados(dados, t('msgLi'));
     } catch {
-      aviso('Não encontrei dados do LinkedIn nesses arquivos. Envie o ZIP da cópia dos seus dados (ou os arquivos Profile.csv, Positions.csv, Education.csv, Skills.csv).', { tipo: 'warn' });
+      aviso(t('errLi'), { tipo: 'warn' });
     }
   };
 
