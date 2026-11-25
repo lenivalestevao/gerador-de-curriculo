@@ -202,3 +202,5 @@ textarea { resize: vertical; }
   .scale-box { width: auto !important; height: auto !important; }
   .scale-box .cv { transform: none !important; box-shadow: none; min-height: 296mm; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 }
+/* seletor de idioma no topo */
+.lang { width: auto; margin-top: 0; padding-right: 4px; }
